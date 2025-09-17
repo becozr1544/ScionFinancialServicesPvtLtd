@@ -31,7 +31,10 @@ import LoanFaqsPage from "./pages/Faqs";
 import CalculatorsPage from "./pages/Calculators";
 import GuidesPage from "./pages/Guides";
 import Testimonials from "./pages/Testimonials";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/admin/Dashboard";
+import LoginPage from "./pages/admin/Login";
+import { AuthProvider } from "./hooks/useAuth";
 
 
 
@@ -96,38 +99,43 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<PageWithLoader><Index /></PageWithLoader>} />
-            <Route path="/about" element={<PageWithLoader><AboutPage /></PageWithLoader>} />
-            <Route path="/services" element={<PageWithLoader><ServicesPage /></PageWithLoader>} />
-            <Route path="/contact" element={<PageWithLoader><ContactPage /></PageWithLoader>} />
-            <Route path="/loans/personal-loan" element={<PageWithLoader><PersonalLoanPage /></PageWithLoader>} />
-            <Route path="/loans/home-loan" element={<PageWithLoader><HomeLoanPage /></PageWithLoader>} />
-            <Route path="/loans/auto-loan" element={<PageWithLoader><AutoLoanPage /></PageWithLoader>} />
-            <Route path="/loans/business-loan" element={<PageWithLoader><BusinessLoanPage /></PageWithLoader>} />
-            <Route path="/loans/education-loan" element={<PageWithLoader><EducationLoanPage /></PageWithLoader>} />
-            <Route path="/loans/project-funding" element={<PageWithLoader><ProjectFundingPage /></PageWithLoader>} />
-            <Route path="/apply-loan" element={<PageWithLoader><ApplyLoan /></PageWithLoader>} />
-            <Route path="/mobile-login" element={<PageWithLoader><MobileLogin /></PageWithLoader>} />
-            <Route path="/blogs" element={<PageWithLoader><Blogs /></PageWithLoader>} />
-            <Route path="/self-employed-business-loan" element={<PageWithLoader><SelfEmployedBusiness /></PageWithLoader>} />
-            <Route path="/self-employed-professional-loan" element={<PageWithLoader><SelfEmployedProfessional /></PageWithLoader>} />
-            <Route path="/home-loan-application" element={<PageWithLoader><HomeLoanApply /></PageWithLoader>} />
-            <Route path="/itr-filing" element={<PageWithLoader><ITReturnsFiling /></PageWithLoader>} />
-            <Route path="/gst-registration" element={<PageWithLoader><GstRegistration /></PageWithLoader>} />
-            <Route path="/passport-services" element={<PageWithLoader><PassportServices /></PageWithLoader>} />
-            <Route path="/pan-card-services" element={<PageWithLoader><PanCardServices /></PageWithLoader>} />
-            <Route path="/faqs" element={<PageWithLoader><LoanFaqsPage /></PageWithLoader>} />
-            <Route path="/calculators" element={<PageWithLoader><CalculatorsPage /></PageWithLoader>} />
-            <Route path="/guides" element={<PageWithLoader><GuidesPage /></PageWithLoader>} />
-            <Route path="/testimonials" element={<PageWithLoader><Testimonials /></PageWithLoader>} />
-            <Route path="/admin/dashboard" element={<PageWithLoader><Dashboard /></PageWithLoader>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<PageWithLoader><NotFound /></PageWithLoader>} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<PageWithLoader><Index /></PageWithLoader>} />
+              <Route path="/about" element={<PageWithLoader><AboutPage /></PageWithLoader>} />
+              <Route path="/services" element={<PageWithLoader><ServicesPage /></PageWithLoader>} />
+              <Route path="/contact" element={<PageWithLoader><ContactPage /></PageWithLoader>} />
+              <Route path="/loans/personal-loan" element={<PageWithLoader><PersonalLoanPage /></PageWithLoader>} />
+              <Route path="/loans/home-loan" element={<PageWithLoader><HomeLoanPage /></PageWithLoader>} />
+              <Route path="/loans/auto-loan" element={<PageWithLoader><AutoLoanPage /></PageWithLoader>} />
+              <Route path="/loans/business-loan" element={<PageWithLoader><BusinessLoanPage /></PageWithLoader>} />
+              <Route path="/loans/education-loan" element={<PageWithLoader><EducationLoanPage /></PageWithLoader>} />
+              <Route path="/loans/project-funding" element={<PageWithLoader><ProjectFundingPage /></PageWithLoader>} />
+              <Route path="/apply-loan" element={<PageWithLoader><ApplyLoan /></PageWithLoader>} />
+              <Route path="/mobile-login" element={<PageWithLoader><MobileLogin /></PageWithLoader>} />
+              <Route path="/blogs" element={<PageWithLoader><Blogs /></PageWithLoader>} />
+              <Route path="/self-employed-business-loan" element={<PageWithLoader><SelfEmployedBusiness /></PageWithLoader>} />
+              <Route path="/self-employed-professional-loan" element={<PageWithLoader><SelfEmployedProfessional /></PageWithLoader>} />
+              <Route path="/home-loan-application" element={<PageWithLoader><HomeLoanApply /></PageWithLoader>} />
+              <Route path="/itr-filing" element={<PageWithLoader><ITReturnsFiling /></PageWithLoader>} />
+              <Route path="/gst-registration" element={<PageWithLoader><GstRegistration /></PageWithLoader>} />
+              <Route path="/passport-services" element={<PageWithLoader><PassportServices /></PageWithLoader>} />
+              <Route path="/pan-card-services" element={<PageWithLoader><PanCardServices /></PageWithLoader>} />
+              <Route path="/faqs" element={<PageWithLoader><LoanFaqsPage /></PageWithLoader>} />
+              <Route path="/calculators" element={<PageWithLoader><CalculatorsPage /></PageWithLoader>} />
+              <Route path="/guides" element={<PageWithLoader><GuidesPage /></PageWithLoader>} />
+              <Route path="/testimonials" element={<PageWithLoader><Testimonials /></PageWithLoader>} />
+              <Route path="/admin" element={<ProtectedRoute />}>
+                <Route path="dashboard" element={<PageWithLoader><Dashboard /></PageWithLoader>} />
+              </Route>
+              <Route path="/admin/login" element={<PageWithLoader><LoginPage /></PageWithLoader>} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<PageWithLoader><NotFound /></PageWithLoader>} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

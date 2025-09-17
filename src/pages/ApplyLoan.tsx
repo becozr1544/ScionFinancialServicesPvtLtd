@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Personal from '@/assets/personal.png';
 import Loan from '@/assets/office.png';
 import Pancard from '@/assets/pancard.png';
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const aiBackground = "https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/f105c5a8-ff9a-48b7-ac1d-07e315664341.png";
 
@@ -25,17 +27,11 @@ const employmentTypes = [
   },
 ];
 
-function generateApplicationId() {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  return Array.from({ length: 10 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-}
-
 const ApplyLoan = () => {
   const [step, setStep] = useState(0);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [personalDetails, setPersonalDetails] = useState({ name: "", email: "", mobile: "" });
   const [loanDetails, setLoanDetails] = useState({
-    fullName: "",
     company: "",
     city: "",
     income: "",
@@ -46,6 +42,7 @@ const ApplyLoan = () => {
   const [panError, setPanError] = useState("");
   const [applicationId, setApplicationId] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const { toast } = useToast();
 
   const navigate = useNavigate();
 
@@ -71,6 +68,39 @@ const ApplyLoan = () => {
       navigate("/self-employed-professional-loan");
     } else if (selectedType === "salaried") {
       setStep(1);
+    }
+  };
+
+  const handleFormSubmission = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!panValid) return;
+
+    const { data, error } = await supabase
+      .from("loan_applications")
+      .insert([
+        {
+          customer_name: personalDetails.name,
+          email: personalDetails.email,
+          phone: personalDetails.mobile,
+          loan_type: selectedType,
+          amount: parseFloat(loanDetails.amount),
+          company: loanDetails.company,
+          city: loanDetails.city,
+          income: parseFloat(loanDetails.income),
+          pan_number: pan,
+        },
+      ])
+      .select();
+
+    if (error) {
+      toast({
+        title: "Submission Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else if (data) {
+      setApplicationId(data[0].id);
+      setSubmitted(true);
     }
   };
 
@@ -271,14 +301,6 @@ const ApplyLoan = () => {
               <h3 className="text-indigo-700 font-bold text-lg mb-1 text-center">Loan Details</h3>
               <input
                 type="text"
-                placeholder="Full Name"
-                className="px-4 py-3 rounded-xl border focus:border-purple-400 outline-none transition"
-                value={loanDetails.fullName}
-                onChange={e => setLoanDetails({ ...loanDetails, fullName: e.target.value })}
-                required
-              />
-              <input
-                type="text"
                 placeholder="Current Company"
                 className="px-4 py-3 rounded-xl border focus:border-purple-400 outline-none transition"
                 value={loanDetails.company}
@@ -323,7 +345,7 @@ const ApplyLoan = () => {
             </form>
           )}
           {step === 3 && selectedType === "salaried" && !submitted && (
-            <form className="grid grid-cols-1 gap-2" onSubmit={e => { e.preventDefault(); if (panValid) { setApplicationId(generateApplicationId()); setSubmitted(true); } }}>
+            <form className="grid grid-cols-1 gap-2" onSubmit={handleFormSubmission}>
               <div className="flex justify-center mb-3">
                 <img
                   src={Pancard}

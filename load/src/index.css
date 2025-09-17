@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SCION Financial Services Design System - Professional Corporate Identity */
+
+@layer base {
+  :root {
+    /* White Background Professional Design */
+    --background: 0 0% 100%; /* Pure white background */
+    --foreground: 220 60% 14%; /* Dark navy text */
+
+    /* SCION Orange Brand */
+    --scion-orange: 24 100% 50%;
+    --scion-orange-light: 24 100% 60%;
+    --scion-orange-dark: 24 100% 40%;
+
+    /* Navy Corporate */
+    --navy-primary: 218 45% 15%;
+    --navy-secondary: 218 35% 25%;
+    --navy-light: 218 25% 35%;
+
+    /* Card System - Light cards on white background */
+    --card: 0 0% 98%; /* Very light gray cards */
+    --card-foreground: 220 60% 14%; /* Dark navy text */
+    --card-hover: 0 0% 96%; /* Slightly darker hover */
+
+    /* Interactive Elements */
+    --primary: 24 100% 50%; /* SCION Orange */
+    --primary-foreground: 0 0% 100%; /* White text on orange */
+
+    --secondary: 220 20% 95%; /* Light gray */
+    --secondary-foreground: 220 60% 14%; /* Dark navy text */
+
+    --muted: 0 0% 96%; /* Light muted background */
+    --muted-foreground: 220 20% 45%; /* Medium gray text */
+
+    --accent: 0 0% 96%; /* Light accent */
+    --accent-foreground: 220 60% 14%; /* Dark navy text */
+
+    /* Status Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI Elements */
+    --border: 0 0% 90%; /* Light gray borders */
+    --input: 0 0% 100%; /* White input background */
+    --ring: 24 100% 50%; /* Orange focus ring */
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 220 60% 14%;
+    --sidebar-primary: 24 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 220 60% 14%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 24 100% 50%;
+  }
+
+  /* Remove theme variants - using consistent white theme */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+@layer components {
+  /* Hero gradient background - white theme */
+  .hero-gradient {
+    background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%);
+  }
+
+  /* Service card hover effects */
+  .service-card {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1;
+  }
+
+  /* Animated underline for links */
+  .animated-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  /* Button hover effects */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-scion-orange-dark transition-all duration-300 hover:shadow-lg hover:shadow-primary/25;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground border border-border hover:bg-card-hover transition-all duration-300;
+  }
+}
